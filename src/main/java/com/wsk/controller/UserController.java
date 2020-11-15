@@ -73,7 +73,7 @@ public class UserController {
     @RequestMapping(value = "/login.do", method = RequestMethod.GET)
     public String login(HttpServletRequest request, Model model) {
         String token = TokenProccessor.getInstance().makeToken();
-        log.info("进入登录界面，token为:" + token);
+        //log.info("进入登录界面，token为:" + token);
         request.getSession().setAttribute("token", token);
         model.addAttribute("token", token);
         return "page/login_page";
@@ -598,15 +598,14 @@ public class UserController {
                 return "redirect:publish_product.do?error=请插入图片";
             }
             String random;
-            String path = "D:\\", save = "";
-            random = "image\\" + StringUtils.getInstance().getRandomChar() + System.currentTimeMillis() + ".jpg";
+            String path = "/Users/alex/mySSM/image/", save = "";
+            random = "image/" + StringUtils.getInstance().getRandomChar() + System.currentTimeMillis() + ".jpg";
             StringBuilder thumbnails = new StringBuilder();
             thumbnails.append(path);
             thumbnails.append("image/thumbnails/");
             StringBuilder wsk = new StringBuilder();
-            wsk.append(StringUtils.getInstance().getRandomChar()).append(System.currentTimeMillis()).append(".jpg");
+            wsk.append(StringUtils.getInstance().getRandomChar()).append(System.currentTimeMillis());
             thumbnails.append(wsk);
-//        String fileName = "\\" + random + ".jpg";
             File file = new File(path, random);
             if (!file.exists()) {
                 file.mkdir();
@@ -616,20 +615,14 @@ public class UserController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-/*            String pornograp = Pornographic.CheckPornograp("D:\\" + random);
-            if (pornograp.equals("色情图片")) {
-                return "redirect:publish_product?error=不能使用色情图片";
-            }
-            if (!OCR.isOk2(pornograp)) {
-                return "redirect:publish_product?error=图片不能含有敏感文字";
-            }*/
+
             //创建缩略图文件夹
             File thumbnailsFile = new File(thumbnails.toString());
             if (!thumbnailsFile.exists()) {
                 thumbnailsFile.mkdir();
             }
             if (StringUtils.getInstance().thumbnails(path + random, thumbnails.toString())) {
-                save = "/images/thumbnails/" + wsk.toString();
+                save = "/image/thumbnails/" + wsk.toString();
             } else {
                 return "redirect:publish_product.do?error=生成缩略图失败";
             }

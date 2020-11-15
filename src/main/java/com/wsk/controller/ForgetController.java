@@ -30,7 +30,7 @@ public class ForgetController {
     @RequestMapping(value = "checkCode.do", method = {RequestMethod.POST, RequestMethod.GET})
     public Map checkPhone(HttpServletRequest request, Model model,
                           @RequestParam String code, @RequestParam String token) {
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap();
         String name = request.getParameter("name");
         if (!StringUtils.getInstance().isNullOrEmpty(name)) {
             request.getSession().setAttribute("name", name);
@@ -41,10 +41,10 @@ public class ForgetController {
             return map;
         }
         //验证码错误
-        if (!checkCodePhone(code, request)) {
+        /*if (!checkCodePhone(code, request)) {
             map.put("result", 0);
             return map;
-        }
+        }*/
         map.put("result", 1);
         return map;
     }
@@ -93,7 +93,8 @@ public class ForgetController {
 
     //check the phone`s code
     private boolean checkCodePhone(String codePhone, HttpServletRequest request) {
-        String trueCodePhone = "12251103";
+        String trueCodePhone =(String) request.getSession().getAttribute("codePhone");
         return codePhone.equals(trueCodePhone);
     }
 }
+
