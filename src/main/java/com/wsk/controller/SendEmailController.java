@@ -38,6 +38,7 @@ public class SendEmailController {
                                   @RequestParam String token) {
         res.setContentType("text/html;charset=UTF-8");
         //token，防止重复提交
+        System.out.println("phone:"+phone+"---"+"action:"+action+"----"+"token:"+token+"---");
         String sendCodeToken = (String) req.getSession().getAttribute("token");
         if (StringUtils.getInstance().isNullOrEmpty(sendCodeToken) || !sendCodeToken.equals(token)) {
             return BaseResponse.fail();
@@ -59,6 +60,8 @@ public class SendEmailController {
             }
         }
         //get the random num to phone which should check the phone to judge the phone is belong user
+        //req.getSession().setAttribute("phone1",phone);
+        //req.getSession().setAttribute("name1",name);
         getRandomForCodePhone(req);
         String ra = (String) req.getSession().getAttribute("codePhone");
         String text1 = "【WSK的验证码】您的验证码是：";
@@ -95,6 +98,7 @@ public class SendEmailController {
         }
         System.out.println(sb.toString());
         req.getSession().setAttribute("codePhone", sb.toString());
+
     }
 
 //    //检验验证码
@@ -128,3 +132,4 @@ public class SendEmailController {
 
 
 }
+
